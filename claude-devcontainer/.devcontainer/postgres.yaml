@@ -1,0 +1,25 @@
+# The one Postgres every feature's dev container shares, each with a database of its own.
+# Start it once: docker compose -f .devcontainer/postgres.yaml up -d
+# The project name is fixed, so starting it from any worktree finds the same container, and
+# Docker keeps it running across restarts.
+name: shared-postgres
+services:
+  postgres:
+    image: postgres:17
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - shared
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 2s
+      timeout: 5s
+      retries: 30
+networks:
+  shared:
+    name: shared-postgres
+volumes:
+  pgdata:

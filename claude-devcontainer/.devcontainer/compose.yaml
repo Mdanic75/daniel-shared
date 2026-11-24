@@ -1,0 +1,20 @@
+# The dev container alone; it joins the network of the shared Postgres in postgres.yaml,
+# which must be running first, and mounts the Claude Code sign-in every feature shares.
+services:
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: sleep infinity
+    volumes:
+      - ..:/workspaces/app
+      - claude-config:/home/vscode/.claude
+    networks:
+      - shared
+networks:
+  shared:
+    name: shared-postgres
+    external: true
+volumes:
+  claude-config:
+    name: claude-config

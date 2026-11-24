@@ -1,0 +1,16 @@
+{
+  "name": "claude-devcontainer",
+  "dockerComposeFile": "compose.yaml",
+  "service": "dev",
+  "workspaceFolder": "/workspaces/app",
+  "shutdownAction": "stopCompose",
+  "remoteUser": "vscode",
+  "containerEnv": {
+    "PGHOST": "postgres",
+    "PGUSER": "postgres",
+    "PGPASSWORD": "postgres",
+    // One database per dev container: devcontainerId differs per folder, so per worktree.
+    "PGDATABASE": "app_${devcontainerId}"
+  },
+  "postStartCommand": ".devcontainer/create-db.sh"
+}
